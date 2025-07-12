@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Prediction</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        function clearPredictions() {
+            document.getElementById("predictions").innerHTML = "";
+            document.getElementById("graphContainer").innerHTML = "";
+        }
+    </script>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center">Predict Future Coin Prices</h1>
+        <div class="card p-4 shadow-sm">
+            <form action="/predict" method="post">
+                <div class="mb-3">
+                    <label for="coin" class="form-label">Choose a Coin:</label>
+                    <select class="form-select" name="coin" id="coin" onchange="clearPredictions()" required>
+                        <option value="">Select a Coin</option>
+                        <option value="Bitcoin">Bitcoin</option>
+                        <option value="Ethereum">Ethereum</option>
+                        <option value="Binance">Binance</option>
+                        <option value="Dogecoin">Dogecoin</option>
+                        <option value="Cosmos">Cosmos</option>
+                        <option value="Litecoin">Litecoin</option>
+                        <option value="Stellar">Stellar</option>
+                        <option value="Ripple">Ripple</option>
+                        <option value="Cardano">Cardano</option>
+                        <option value="Solana">Solana</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="num_days" class="form-label">Number of Days to Predict:</label>
+                    <input type="number" class="form-control" id="num_days" name="num_days" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Predict</button>
+            </form>
+        </div>
+
+        {% if predictions %}
+    <div class="mt-4 p-3 bg-white shadow-sm rounded">
+        <h2 class="text-center">Predictions</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Predicted Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for date, price in predictions %}
+                    <tr>
+                        <td>{{ date }}</td>
+                        <td>${{ price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if graph_url %}
+        <div id="graphContainer" class="mt-4 text-center">
+            <h2>Prediction Graph</h2>
+            <img src="{{ graph_url }}" alt="Prediction Graph" class="img-fluid shadow-sm">
+        </div>
+    {% endif %}
+{% endif %}
+
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
